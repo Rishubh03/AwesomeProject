@@ -1,107 +1,134 @@
-import { View, Text, StyleSheet, TextInput, Alert, render } from 'react-native'
-import React, { useState } from 'react'
-import { Button, Input } from 'react-native-elements'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { s, vs, ms, mvs } from 'react-native-size-matters';
+import { View, Text, Image, SafeAreaView, Dimensions, TextInput, StatusBar, TouchableWithoutFeedback } from 'react-native';
+import { Button, Input, LinearProgress } from 'react-native-elements';
 import { ScaledSheet } from 'react-native-size-matters';
+import React, { useState } from 'react'
+import { color } from 'react-native-elements/dist/helpers';
+import { useRegisterUserMutation } from '../../../services/userAuthApi';
+import { storeToken } from '../../../services/AsyncStorageService';
 
-
-export const Register = ({ navigation }) => {
+const Register = ({ navigation }) => {
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [password2, setPassword2] = useState("")
-    const [tc, setTc] = useState(null);
+
+
 
     const clearTextInput = () => {
         setName('')
         setEmail('')
         setPassword('')
         setPassword2('')
-        setTc(null)
-      }
+    }
+
+    const [registerUser] = useRegisterUserMutation()
+
+    const handleFormSubmit = async () => {
+        const formData = { name, email, password, password2 }
+        const res = await registerUser(formData)
+        if (res.data) {
+            await storeToken(res.data.token)  // Store Token in Storage
+            clearTextInput()
+            navigation.navigate('Login')
+        }
+        if (res.error) {
+            console.log(res.error);
+        }
+    }
     return (
         <SafeAreaView style={styles.Container}>
-            <View style={{ marginHorizontal: 5, }}>
-                <Text style={styles.Title}>Register on Apna Garden App</Text>
-                <Text style={styles.ContentText}>Create an account,{'\n'}We can't wait to have you.</Text>
 
-                <View>
-                    <Input
-                        containerStyle={{
-                            borderWidth: 0,
-                        }}
-                        placeholder="Email address"
-                        underlineColorAndroid="transparent"
-                    />
+            <Text style={styles.titleText}>Welcome Onboard!</Text>
 
-                    <Input
-                        containerStyle={{
-                            borderWidth: 0,
-                        }}
-                        placeholder="Password"
-                        secureTextEntry={true}
-                        underlineColorAndroid="transparent"
-                    />
-                </View>
+            <Input
+                placeholder=" Enter your full name"
+                value={name} onChangeText={setName}
+                containerStyle={{}}
+            />
 
-                <Text style={styles.ContentText}>Or Register using</Text>
+            <Input
+                placeholder=" Enter your email"
+                value={email}
+                onChangeText={setEmail}
+                autoCorrect={true}
+                containerStyle={{}}
+            />
 
-                <View style={styles.AuthButton}>
-                    <Button
-                        title="Facebook" type="outline" containerStyle={{ backgroundColor: "#0000ff" }} titleStyle={{ color: "white", fontFamily: 'cosmicsans', }}
-                        onPress={() => Alert.alert('Register with Facebook')}
-                    />
-                    <Button
-                        title="Google" type="outline" containerStyle={{ backgroundColor: "#fff" }} titleStyle={{ color: "black", fontFamily: 'cosmicsans', }}
-                        onPress={() => Alert.alert('Register with Google')}
-                    />
-                </View>
+            <Input
+                placeholder=" Enter password"
+                autoCorrect={true}
+                value={password}
+                onChangeText={setPassword}
+                containerStyle={{}}
+                secureTextEntry={true}
+            />
 
-                <View style={styles.RegisterButton}>
-                    <Button
-                        title="Register" type="outline" containerStyle={{ backgroundColor: "#fff" }} titleStyle={{ color: "black" }}
-                        onPress={() => navigation.navigate('Welcome')}
-                    />
-                </View>
+            <Input
+                placeholder=" Confirm Password"
+                value={password2}
+                onChangeText={setPassword2}
+                autoCorrect={true}
+                containerStyle={{}}
+                secureTextEntry={true}
+            />
 
-            </View>
-        </SafeAreaView>
-    );
+            <Button title="Register" type='outline' titleStyle={{ color: '#fff' }} containerStyle={{ backgroundColor: '#50C2C9', width: '90%', marginVertical: 10 }}
+                onPress={handleFormSubmit}
+            />
+
+            <Text style={{fontWeight:'600', alignSelf: 'center',marginVertical:10, fontSize:16 }}>Or</Text>
+
+            <Button
+                title="Sign In with Facebook"
+                type='outline'
+                titleStyle={{ color: '#254897' }}
+                containerStyle={styles.facebookButton}
+            />
+
+            <Button
+                title="Sign In with Google"
+                type='outline'
+                titleStyle={{ color: '#DB3F32' }}
+                containerStyle={styles.googleButton}
+
+            />
+
+            <TouchableWithoutFeedback onPress={() => { navigation.navigate("Login") }}>
+                <Text style={{fontWeight:'600', alignSelf: 'center',marginVertical:10, fontSize:16}}>Already have an account? Sign In</Text>
+            </TouchableWithoutFeedback>
+            
+        </SafeAreaView >
+    )
 }
+
+
 
 const styles = ScaledSheet.create({
     Container: {
         flex: 1,
-        backgroundColor: '#C1F4F4',
         justifyContent: 'center',
+        alignItems: 'center',
+        paddingTop: StatusBar.currentHeight,
+        backgroundColor: '#E6E6E6',
+        paddingHorizontal: 10,
+    },
+    titleText: {
+        fontSize: "18@ms",
+        fontWeight: "600",
+        fontStyle: "normal",
+    },
+    
+    facebookButton: {
+        width: '90%',
+        borderRadius: 15,
+        backgroundColor: '#9EACCF',
+        marginBottom: 15,
+    },
+    googleButton: {
+        width: '90%',
+        borderRadius: 15,
+        backgroundColor: '#ECB6B5'
     },
 
-    Title: {
-        marginLeft: 0,
-        fontSize: "20@ms",
-        fontWeight: "400",
-        
-    },
-
-    ContentText: {
-        marginLeft: 0,
-        
-        fontSize: "16@ms",
-        fontWeight: "400",
-        
-        marginVertical: 20,
-    },
-
-    RegisterButton: {
-        marginBottom: 10,
-    },
-    AuthButton: {
-        display: 'flex',
-        justifyContent: 'space-around',
-        flexDirection: 'row',
-        marginBottom: 15
-    },
-
-});
+})
 export default Register

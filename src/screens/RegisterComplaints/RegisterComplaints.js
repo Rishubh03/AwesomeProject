@@ -1,38 +1,48 @@
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, SafeAreaView, StatusBar } from 'react-native'
 import React from 'react'
+import { ScaledSheet } from 'react-native-size-matters'
+
 
 const RegisterComplaints = ({ navigation }) => {
     return (
-        <View style={styles.ParentBox}>
-            <View style={styles.ChildBox}>
-                <Text style={styles.TextStyle} onPress={() => navigation.navigate('RegisterComplaintsInside')} >Register Complaints <Image source={require('../../../assets/Images/RegisterComplaints.png')} /></Text>
+        <SafeAreaView style={styles.container}>
+        
+            <View style={styles.Box}>
+                <Text style={styles.Text} onPress={() => navigation.navigate('RegisterComplaintsInside')} >Register Complaints</Text> 
+                <Image source={require('../../../assets/Images/RegisterComplaints.png')} />
             </View>
-            <View style={styles.ChildBox}>
-                <Text style={styles.TextStyle} onPress={() => navigation.navigate('TrackComplaints')} >Track Complaints <Image source={require('../../../assets/Images/RegisterComplaints.png')} /></Text>
+            
+            <View style={styles.Box}>
+                <Text style={styles.Text} onPress={() => navigation.navigate('TrackComplaints')} >Track Complaints</Text>
+                <Image source={require('../../../assets/Images/RegisterComplaints.png')} />
             </View>
-        </View>
+      
+    </SafeAreaView>
     )
 }
 
 
-const styles = StyleSheet.create({
-    ParentBox: {
+const styles = ScaledSheet.create({
+    container: {
         flex: 1,
-        padding: 10,
-        justifyContent: 'space-between',
-        maxHeight: '35%'
-    },
-    ChildBox: {
-        backgroundColor: '#c1f4f4',
-        padding: 10,
-        alignItems: 'center',
+        marginTop: StatusBar.currentHeight,
         justifyContent: 'center',
+        alignItems:"center",
+    },
+    Box: {
+        flexDirection:'row',
+        backgroundColor: '#c1f4f4',
+        marginBottom:"10@ms",
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        width:"95%",
+        marginHorizontal:5,
         borderRadius: 30,
         borderWidth: 2,
-
+        
     },
-    TextStyle: {
-        fontSize: 30,
+    Text: {
+        fontSize:"25@ms",
         fontWeight: '400',
     }
 })

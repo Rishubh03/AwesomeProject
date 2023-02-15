@@ -1,12 +1,22 @@
-import { View, Text } from 'react-native'
+import { View, Text, SafeAreaView, StatusBar, } from 'react-native'
 import React from 'react'
+import { ScaledSheet } from 'react-native-size-matters'
+
 
 const TrackComplaints = () => {
     return (
-        <View>
+        <SafeAreaView style = {styles.container}>
             <Text>TrackComplaints</Text>
-        </View>
+        </SafeAreaView>
     )
 }
 
+const styles = ScaledSheet.create({
+    container:{
+        marginTop:StatusBar.currentHeight,
+        flex:1,
+        alignItems:'center',
+        justifyContent: 'center',
+    }
+});
 export default TrackComplaints

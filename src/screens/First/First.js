@@ -3,53 +3,48 @@ import React from 'react'
 import { Button } from 'react-native-elements';
 import { ScaledSheet } from 'react-native-size-matters';
 import { SafeAreaView } from 'react-native-safe-area-context'
-import AntDesign  from 'react-native-vector-icons/AntDesign'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 const First = ({ navigation }) => {
     return (
-    <SafeAreaView style = {styles.Page}>
-        <ScrollView keyboardShouldPersistTaps='handled'>
-            <View >
-            <View style={styles.LoginButton}>
-                <Button title="Login" type='outline' titleStyle={{ color: '#000' }} containerStyle={{ backgroundColor: 'white' }}
-                    onPress={() => navigation.navigate('Login')}/>
-            </View>
-            <View style={styles.SignupButton}>
-                <Button title="Register" type='outline' titleStyle={{ color: "#000" }} containerStyle={{ backgroundColor: "white" }}
-                    onPress={() => navigation.navigate('Register')} />
-            </View>
+        <SafeAreaView style={styles.container}>
+            <Image
+                style={styles.icon}
+                source={require('../../../assets/first-page-logo.png')}
+            />
+            <Text style={styles.welcomeText}>Welcome to Apna Garden</Text>
 
-            </View>
-            </ScrollView>
-    </SafeAreaView>
+            <Text style={{fontWeight:'400',fontSize:13}}>Lorem ipsum dolor sit amet,</Text>
+            <Text style={{fontWeight:'400',fontSize:13}}>consectetur adipiscing elit. Interdum</Text>
+            <Text style={{fontWeight:'400',fontSize:13}}>dictum tempus, interdum at dignissim</Text>
+            <Text style={{fontWeight:'400',fontSize:13}}>metus. Ultricies sed nunc.</Text>
+
+            <Button title="Get Started" type='outline' titleStyle={{ color: '#fff' }} containerStyle={{ backgroundColor: '#50C2C9',width:'90%',marginVertical:25 }}
+                onPress={() => navigation.navigate('Login')}
+            />
+
+        </SafeAreaView>
 
     );
 }
 
 const styles = ScaledSheet.create({
-    Page: {
-        flex:1,
-        backgroundColor: '#C1f4f4',
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
         paddingTop: StatusBar.currentHeight,
-
+        backgroundColor: '#E6E6E6',
     },
-    Circle: {
-        marginLeft: 150,
-        marginTop: -250,
+    welcomeText: {
+        fontWeight: '600',
+        fontSize: 18,
+        marginVertical:20,
     },
-    SideImage: {
-        marginLeft: 300,
-        marginTop: -200,
-        marginBottom: 80,
-    },
-    LoginButton: {
-        marginBottom: 10,
-        maxWidth: "200@ms",
-        maxHeight:"50@ms"
-    },
-    SignupButton: {
-        maxWidth: "200@ms",
-        maxHeight:"50@ms"
+    icon: {
+        marginVertical: 20,
+        width: 200,
+        height: 170,
     },
 
 })
